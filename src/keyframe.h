@@ -1,19 +1,21 @@
 #ifndef KEYFRAME_H
 #define KEYFRAME_H
 
-#endif // KEYFRAME_H
 
 # include <mutex>
 
 
-namespace kbSLAM {
+namespace F_SLAM {
 
-class frame;
-class map;
-class keyFrame{
+class Frame;
+class Map;
+class KeyFrame{
 public:
-    keyFrame(frame &f,map* pMap);
+    KeyFrame(frame &f,map* pMap);
 
 };
 
 }
+
+
+#endif // KEYFRAME_Hs

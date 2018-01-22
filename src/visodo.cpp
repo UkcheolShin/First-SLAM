@@ -157,6 +157,50 @@ int main( int argc, char** argv )
           featureTracking(prevImage,currImage,prevFeatures,currFeatures, status);
       }
 
+#ifdef TRIANGULATION
+      // R,t로부터 projection matrix 구성.
+      // 한쪽을 [I|0]이라 생각, 다른 한쪽을 [R|t]라 생각.
+      cv::Mat projection2(3, 4, CV_64F);        // the 3x4 projection matrix
+      R_f.copyTo(projection2(cv::Rect(0, 0, 3, 3)));
+      t_f.copyTo(projection2.colRange(3, 4));
+
+      // compose generic projection matrix 
+      cv::Mat projection1(3, 4, CV_64F, 0.);    // the 3x4 projection matrix
+      cv::Mat diag(cv::Mat::eye(3, 3, CV_64F));
+      diag.copyTo(projection1(cv::Rect(0, 0, 3, 3)));
+
+      std::cout << "First Projection matrix=" << projection1 << std::endl;
+      std::cout << "Second Projection matrix=" << projection2 << std::endl;
+
+      // inlier point 들을 구성하여 undistort하고, triangulate함.
+      // to contain the inliers
+      std::vector<cv::Vec2d> inlierPts1;
+      std::vector<cv::Vec2d> inlierPts2;
+
+      // create inliers input point vector for triangulation
+      int j(0); 
+      for (int i = 0; i < inliers.rows; i++) {
+
+        if (inliers.at<uchar>(i)) {
+          inlierPts1.push_back(cv::Vec2d(points_prev[i].x, points_prev[i].y));
+          inlierPts2.push_back(cv::Vec2d(points_curr[i].x, points_curr[i].y));
+        }
+      }
+      cv::Mat cameraMatrix; /// Camera Matrix
+      cv::Mat distCoeffs; /// Camera Distortion Matrix
+
+      // undistort and normalize the image points
+      std::vector<cv::Vec2d> points1u;
+      cv::undistortPoints(inlierPts1, points1u, cameraMatrix, cameraDistCoeffs);
+      std::vector<cv::Vec2d> points2u;
+      cv::undistortPoints(inlierPts2, points2u, cameraMatrix, cameraDistCoeffs);
+
+     // triangulation
+      std::vector<cv::Vec3d> points3D;
+      triangulate(projection1, projection2, inlierPts1, inlierPts2, points3D);
+#endif
+
+
       // Update variable
       prevImage = currImage.clone();
       prevFeatures = currFeatures;
