@@ -1,5 +1,5 @@
-#ifndef KEYFRAME_H
-#define KEYFRAME_H
+#ifndef __KEYFRAME_H__
+#define __KEYFRAME_H__
 
 
 # include <mutex>

@@ -1,5 +1,5 @@
-#ifndef HEADER_H
-#define HEADER_H
+#ifndef __HEADER_H__
+#define __HEADER_H__
 
 
 #include <opencv2/core.hpp>
@@ -10,6 +10,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include "opencv2/video/tracking.hpp"
 #include <opencv2/opencv.hpp>
+#include <opencv2/viz.hpp>
 
 #include <iostream>
 #include <ctype.h>
@@ -23,7 +24,5 @@
 #include <stdlib.h>
 
 using namespace std;
-
-
 
 #endif // HEADER_H
