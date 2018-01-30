@@ -13,10 +13,18 @@ so the scale informaion is extracted from the KITTI dataset ground truth files.
 
 ## To do
 1. Two view mapping in single task ( due data : 2018.01.23)
-> 1. Map class
-> 2. Map point class
-> 3. triangulation
-> 4. visualize 3D map
+> 1. Make up Map point class
+> 2. Make up Map class
+> 3. triangulation (done)
+> 4. visualize 3D map (done)
+> 5. Make up frame class 
+> 6. complement 3 task (2d drawer, 3d drawer, tracking)
+> 7. make system.cpp 
+> 8. key-frame selection
+> 9. key-frame class
+> 10. BA class
+> 11. Local Mapping Class 
+
 
 ## Demo Video
 [![Demo video](http://share.gifyoutube.com/Ke1ope.gif)](http://www.youtube.com/watch?v=homos4vd_Zs)

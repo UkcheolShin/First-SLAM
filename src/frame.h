@@ -9,10 +9,10 @@
 #define __FRAME_H__
 
 #include "header.h"
+#include "keyframe.h"
 
 namespace F_SLAM{
 
-//bool Frame::mbInitialComputations=true;
 /**
 @brief Frame에 대한 정보 처리.
 */
@@ -28,7 +28,7 @@ public:
     long unsigned int mnId;
 
     // Reference Keyframe.
-    //KeyFrame* mpReferenceKF;
+    KeyFrame* mpReferenceKF;
 
     // Rotation, Translation and camera center
     cv::Mat mR2W;
@@ -60,6 +60,10 @@ public:
         image = input_image;
         if(image.channels() == 3)
             cv::cvtColor(image, image, CV_BGR2GRAY); 
+
+        // ORB extraction
+        DetectKeypoint(0);
+
     } 
 
     /// @brief 입력된 이미지 경로에 대해서 읽어 온 후 GRAY 스케일로 변환하여 저장.
@@ -68,18 +72,22 @@ public:
         image = cv::imread(filename);
         if(image.channels() == 3)
             cv::cvtColor(image, image, CV_BGR2GRAY); 
+
+        // ORB extraction
+        DetectKeypoint(0);
+
     }
- /*
+ 
     /// @brief 입력된 이미지에 대해서 GRAY 스케일로 변환하여 저장.
     Frame(const cv::Mat &imGray, const double &timeStamp, cv::Mat &K, cv::Mat &distCoef)
-        :mTimeStamp(timeStamp), mK(K.clone()),mDistCoef(distCoef.clone()),
+        :mTimeStamp(timeStamp), mK(K.clone()),mDistCoef(distCoef.clone())
     {
         // rgb --> gray
         if(imGray.channels()==3)
             cvtColor(imGray,imGray,CV_RGB2GRAY);
             
         // ORB extraction
-        DetectKeypoint(0,imGray);
+        DetectKeypoint(0);
 
         // This is done only for the first Frame (or after a change in the calibration)
         if(mbInitialComputations)
@@ -91,10 +99,11 @@ public:
             invfx = 1.0f/fx;
             invfy = 1.0f/fy;
 
+            nNextId = 0;
             mbInitialComputations=false;
         }
     }
-*/
+
     /// @brief 이미지에 대해서 키포인트를 검출.
     void DetectKeypoint(const int flag)
     {   
@@ -131,5 +140,6 @@ public:
     ~Frame() { }
 };
 
+bool Frame::mbInitialComputations=true;
 } // namespace
 #endif

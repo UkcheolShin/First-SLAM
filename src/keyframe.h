@@ -11,7 +11,7 @@ class Frame;
 class Map;
 class KeyFrame{
 public:
-    KeyFrame(frame &f,map* pMap);
+//    KeyFrame(frame &f,map* pMap);
 
 };
 

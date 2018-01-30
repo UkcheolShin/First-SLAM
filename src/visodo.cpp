@@ -77,19 +77,19 @@ int main( int argc, char** argv )   {
     
     std::vector<cv::Vec3d> points3D ;
     visu_odo.triangulation(R, t, points3D); 
-    m_drawer.Draw_Fr(R,t);
-    m_drawer.Draw_Points(points3D);
-    m_drawer.Run();
-
+    //m_drawer.Draw_Fr(R,t);
+    //m_drawer.Draw_Points(points3D);
+    
     //Use a member function in a thread
-//    std::thread th1(&F_SLAM::MapDrawer::Draw_Fr,&m_drawer,R,t);
-//    thread th2(&F_SLAM::MapDrawer::Draw_Points,&m_drawer,points3D);
+    std::thread th1(&F_SLAM::MapDrawer::Draw_Fr,&m_drawer,std::ref(R),std::ref(t));
+    std::thread th2(&F_SLAM::MapDrawer::Draw_Points,&m_drawer,std::ref(points3D));
 //    thread th3(&F_SLAM::MapDrawer::Run,&m_drawer);
 
     //Join the thread with the main thread
-//    th1.join();
-//    th2.join();   
+    th1.join();
+    th2.join();   
 //    th3.join();
+    m_drawer.Run();
 
    // 5. a redetection is triggered in case the number of feautres being trakced go below a particular threshold
     visu_odo.checkKeyPoint();
@@ -103,9 +103,10 @@ int main( int argc, char** argv )   {
 //    imshow("Road facing camera", img_curr );
     imshow("Trajectory", traj );
     imshow("Tracked image", img_track);
-    while(1)
-      m_drawer.Run();
-    waitKey();
+
+//    while(1)
+//      m_drawer.Run();
+    waitKey(1);
 //  }
 }
   clock_t end = clock();
