@@ -81,6 +81,17 @@ public:
         std::cout << "Num of Detected Keypoint : "<< img.keypoints.size() <<std::endl <<std::endl; 
     }    
 
+    Frame GrabImage(const cv::Mat &im, const double &timestamp)
+    {
+      // image을 받아와 tracking class의 member함수에 저장
+      mImGray = im;
+      if(mImGray.channels() == 3)
+        cvtColor(mImGray,mImGray,CV_BGR2GRAY)
+      // Frame object 생성 
+      return Frame(mImGray,timestamp,mK,mDistCoef);
+
+    }
+
     /// @brief 이전 프레임의 특징점을 기반으로 Optical Flow tracking.
     void featureTracking()
     {   
